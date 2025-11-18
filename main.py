@@ -1,5 +1,6 @@
 from turtle import *
 import math
+import local as lcl
 
 
 def koch(order: int, size: float) -> None:
@@ -38,7 +39,7 @@ def snowflake_koch(order, size) -> None:
         size (float): Length of the current curve segment
 
     Returns:
-        None: Функция выполняет отрисовку, не возвращает значений
+        None: The function performs rendering and does not return any values
     """
 
     for side in range(3):
@@ -71,7 +72,7 @@ def branch(order: int, size: float) -> None:
         branch(order - i - 1, 0.5 * x * (order - i - 1))
         rt(135)
     forward(x)
-    left(180)
+    lt(180)
     forward(size)
 
 
@@ -124,9 +125,9 @@ def square_fractal(depth: int, size: float) -> None:
 
     for _ in range(4):
         forward(size)
-        right(90)
+        rt(90)
     forward(size * 0.1)
-    right(10)
+    rt(10)
     square_fractal(depth - 1, size * 0.9)
 
 
@@ -145,11 +146,11 @@ def ice_1(dpth: int, size: float) -> None:
         forward(size)
     else:
         ice_1(dpth - 1, size / 2)
-        left(90)
+        lt(90)
         ice_1(dpth - 1, size / 4)
-        left(180)
+        lt(180)
         ice_1(dpth - 1, size / 4)
-        left(90)
+        lt(90)
         ice_1(dpth - 1, size / 2)
 
 
@@ -184,34 +185,34 @@ def minkowski(order: int, size: float) -> None:
         minkowski(order - 1, size / 4)
 
 
-def draw_branch(length: float) -> None:
+def draw_branch(size: float) -> None:
     """
     Recursively draws a branch:
     1. Draw a line forward.
     2. Make two turns to the right and left.
-    3. Reduce the length of the branch.
+    3. Reduce the size of the branch.
     4. Stop when the branch is too short.
 
     Args:
-        length (int): First line length.
+        size (int): First line length.
 
     Returns:
         None: The function only draws a branches.
     """
 
-    if length < 5:
+    if size < 5:
         return
 
-    forward(length)
+    forward(size)
 
-    right(30)
-    draw_branch(length * 0.7)
+    rt(30)
+    draw_branch(size * 0.7)
 
-    left(60)
-    draw_branch(length * 0.7)
+    lt(60)
+    draw_branch(size * 0.7)
 
-    right(30)
-    backward(length)
+    rt(30)
+    backward(size)
 
 
 def ice_2(order: int, size: float) -> None:
@@ -322,44 +323,43 @@ def spiral_triangle(order: int, size: float) -> None:
             pendown()
 
 
-def nastya(depth: int, length: float) -> None:
+def nastya(order: int, size: float) -> None:
     """
     Recursively draws the Nastya fractal curve.
 
     Args:
-        depth (int): recursion depth - determines the level of detail in the curve
-        length (float): current segment length
+        order (int): recursion depth - determines the level of detail in the curve
+        size (float): current segment size
 
     Returns:
         None: The function only draws the curve and doesn't return any value.
     """
 
-    if depth == 0:
-        forward(length)
+    if order == 0:
+        forward(size)
     else:
-        length /= 4
 
-        left(120)
-        nastya(depth - 1, length)
+        lt(120)
+        nastya(order - 1, size/4)
 
-        right(60)
-        nastya(depth - 1, length)
+        rt(60)
+        nastya(order - 1, size/4)
 
-        right(120)
-        nastya(depth - 1, length)
+        rt(120)
+        nastya(order - 1, size/4)
 
-        right(60)
-        nastya(depth - 1, length)
+        rt(60)
+        nastya(order - 1, size/4)
 
-        nastya(depth - 1, length)
+        nastya(order - 1, size/4)
 
-        left(60)
-        nastya(depth - 1, length)
+        lt(60)
+        nastya(order - 1, size/4)
 
-        left(60)
-        nastya(depth - 1, length)
+        lt(60)
+        nastya(order - 1, size/4)
 
-        nastya(depth - 1, length)
+        nastya(order - 1, size/4)
 
 
 def fractal_line(order: int, size: float) -> None:
@@ -419,36 +419,36 @@ def main() -> None:
     """
 
     fractals = {
-        '1': 'Кривая Коха',
-        '2': 'Ледяной 1',
-        '3': 'Ледяной 2',
-        '4': 'Кривая Леви',
-        '5': 'Двоичное дерево',
-        '6': 'Снежинка Коха',
-        '7': 'Квадрат',
-        '8': 'Уникальный фрактал 1',
-        '9': 'Уникальный фрактал 2',
-        '10': 'Уникальный фрактал 3',
-        '11': 'Уникальный фрактал 4',
-        '12': 'Кривая Минковского',
-        '13': 'Фрактал "Ветка"'
+        '1': f'{lcl.KOCH_CURVE}',
+        '2': f'{lcl.ICY_1}',
+        '3': f'{lcl.ICY_2}',
+        '4': f'{lcl.LEVY_CURVE}',
+        '5': f'{lcl.BINARY_TREE}',
+        '6': f'{lcl.KOCH_SNOWFLAKE}',
+        '7': f'{lcl.SQUARE}',
+        '8': f'{lcl.UNIQUE_FRACTAL_1}',
+        '9': f'{lcl.UNIQUE_FRACTAL_2}',
+        '10': f'{lcl.UNIQUE_FRACTAL_3}',
+        '11': f'{lcl.UNIQUE_FRACTAL_4}',
+        '12': f'{lcl.MINKOWSKI_CURVE}',
+        '13': f'{lcl.FRACTAL_BRANCH}'
     }
-    print("Выберите фрактал:")
+    print(f'{lcl.SELECT_FRACTAL}')
     for key, name in fractals.items():
         print(f"{key}. {name}")
 
-    choice = input("Введите номер (1-13): ").strip()
+    choice = input(f'{lcl.ENTER_NUMBER} (1-13): ').strip()
 
     if choice not in fractals:
-        print("Некорректный ввод.")
+        print(f'{lcl.INCORRECT_INPUT}')
         exit()
 
     if choice == '11':
-        depth = int(input('Глубина рекурсии (1-3): '))
-        length = int(input('Длина стороны (70-180): '))
+        depth = int(input(f'{lcl.DEPTH_OF_RECURSION} (1-3): '))
+        length = int(input(f'{lcl.SIDE_LENGTH} (70-180): '))
     else:
-        depth = int(input('Глубина рекурсии: '))
-        length = int(input('Длина стороны: '))
+        depth = int(input(f'{lcl.DEPTH_OF_RECURSION}'))
+        length = int(input(f'{lcl.SIDE_LENGTH}'))
     up()
 
     match choice:
@@ -482,9 +482,9 @@ def main() -> None:
 
         case '5':
             try:
-                angle = int(input('Угол ветвления:'))
+                angle = int(input(f'{lcl.BRANCHING_ANGLE}'))
             except ValueError:
-                print("неправильно введён угол")
+                print(f'{lcl.CORNER_IS_INCORRECTLY_ENTERED}')
             x_coord = 0
             y_coord = 0
             setposition(x_coord, y_coord)
